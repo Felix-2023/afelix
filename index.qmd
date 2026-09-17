@@ -20,6 +20,6 @@ about:
 
 # Welcome!
 
-I am Felix Atuhaire, a PhD student in Biomedical Engineering at Case Western Reserve University. My work lies at the intersection of engineering, computer science, and medicine, with a particular interest in brain-computer interfaces and biomedical signal processing. My research focuses on developing technologies that improve the reliability of brain-computer interfaces and help restore movement and independence for individuals with neurological conditions, including spinal cord injury.
+I am Felix Atuhaire, a PhD student in Biomedical Engineering at Case Western Reserve University. My work lies at the intersection of engineering, neuroscience, and medicine, with a particular interest in brain-computer interfaces and biomedical signal processing. My research focuses on developing technologies that improve the reliability of brain-computer interfaces and help restore movement and independence for individuals with neurological conditions, including spinal cord injury.
 
 Before beginning my PhD, I earned a master’s degree in Biomedical Engineering from the University of Cape Town and a bachelor’s degree in Computer and Communications Engineering from Mbarara University of Science and Technology. My experience spans medical image analysis, three-dimensional facial reconstruction, machine learning, programming, teaching, and student mentorship. I am passionate about applying interdisciplinary research and education to solve meaningful healthcare challenges and develop technologies that improve people’s quality of life.
