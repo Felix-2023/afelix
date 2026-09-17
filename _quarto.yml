@@ -1,4 +1,4 @@
-# This file controls the settings for your Quarto template from www.marvinschmitt.com
+# This file controls the settings for your Quarto template 
 
 # website settings
 website:
@@ -23,8 +23,6 @@ website:
     
     # your social media handles
     right:
-      - icon: folder-symlink
-        href: https://www.marvinschmitt.com/blog/website-tutorial-quarto/
       - icon: linkedin
         href: https://www.linkedin.com/in/felix-atuhaire-7a126b312/
       - icon: envelope
