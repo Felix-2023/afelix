@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: Projects
 ---
@@ -7,3 +8,14 @@ title: Projects
 - Investigating effects of internal states such as mental fatigue on intracortical activity and brain-computer interface performance in tetraplegia (LIMBS lab)
 
 - Reconstructing three-dimensional human faces from 2D images with a goal of screening for fetal alcohol syndrome in children (Mi2D2 lab)
+=======
+---
+title: Projects
+---
+
+### Current and past projects
+
+- Investigating effects of internal states such as mental fatigue on intracortical activity and brain-computer interface performance in tetraplegia (LIMBS lab)
+
+- Reconstructing three-dimensional human faces from 2D images with a goal of screening for fetal alcohol syndrome in children (Mi2D2 lab)
+>>>>>>> 71aac5efca9de05fa22e863e8fcb58aabb96565a
