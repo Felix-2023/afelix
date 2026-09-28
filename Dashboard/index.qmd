@@ -34,7 +34,7 @@ if (file.exists(csv_path)) {
 required <- c("RIDAGEYR", "BPXOSY1", "BPXODI1", "RIAGENDR", "RIDRETH1")
 missing_columns <- setdiff(required, names(raw))
 if (length(missing_columns)) {
-  stop("Missing columns: ", paste(missing_columns, collapse = ", "))
+  stop("Missing columns ", paste(missing_columns, collapse = ", "))
 }
 # Data preparation 
 
@@ -131,7 +131,7 @@ ggplot(analysis_b, aes(x = BPXOSY1)) +
 ```
 
 ```{r}
-#| title: Density and boxplot by sex
+#| title: Violon plot and boxplot by sex
 ggplot(analysis_b, aes(x = sex, y = BPXOSY1, fill = sex)) +
   geom_violin(alpha = 0.65, trim = FALSE, show.legend = FALSE) +
   geom_boxplot(width = 0.13, alpha = 0.8, show.legend = FALSE,

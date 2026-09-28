@@ -18,12 +18,12 @@ The .qmd file uses Quarto’s dashboard format to organize the plots into pages 
 
 **Comparing two blood pressure measurements together**
 
-The first page places diastolic pressure on the horizontal axis and systolic pressure on the vertical axis. Each point represents an adult with both readings; a fitted line shows the overall direction of the relationship. A second plot separates the points into female and male panels.
+The first page places diastolic pressure on the horizontal axis and systolic pressure on the vertical axis. Each point represents an adult with both readings. A fitted line shows the overall direction of the relationship which positive direction. A second plot separates the points into female and male groups.
 
-Among 7,187 adults with both readings, the Pearson correlation was approximately 0.66. Higher diastolic readings generally accompanied higher systolic readings in this sample, although individual points varied around the fitted line. The line describes a trend; it does not show that one measurement causes the other.
+Among 7,187 adults with both readings, the Pearson correlation was approximately 0.66. Higher diastolic readings generally accompanied higher systolic readings in this sample, although individual points varied around the fitted line. The line describes a trend however it does not show that one measurement causes the other.
 
 **Comparing systolic pressure across groups**
 
 The next page focuses on the first systolic reading. Side-by-side histograms show how often different values occurred among female and male respondents. A violin plot with a boxplot makes the center, spread, and unusual high readings easier to compare. Mean first systolic pressure was about 121.3 mmHg for female respondents and 127.0 mmHg for male respondents.
 
-The final page uses boxplots, separate histograms, and overlapping density curves to examine race/Hispanic-origin categories. Boxplots emphasize medians and spread; histograms show counts within each group; density curves compare distribution shapes when group sizes differ. The highest sample mean was approximately 128.5 mmHg in the Non-Hispanic Black category. The other category means ranged from about 121.9 to 124.0 mmHg. These are descriptive differences between observed groups, not explanations for why the differences occur.
+The final page uses boxplots, separate histograms, and overlapping density curves to examine race/Hispanic-origin categories. Boxplots emphasize medians and spread; histograms show counts within each group; density curves compare distribution shapes when group sizes differ. The highest sample mean was approximately 128.5 mmHg in the Non-Hispanic Black category. The other category means ranged from about 121.9 to 124.0 mmHg. These are descriptive differences between observed groups, however, they do not explain for why the differences occur.
