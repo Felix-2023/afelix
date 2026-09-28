@@ -1,0 +1,176 @@
+---
+title: "Blood Pressure Analysis"
+
+format:
+  dashboard:
+    theme: cosmo
+    scrolling: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+csv_path <- "data/data1000.csv"
+rds_paths <- c("data/NEWdata2.RDS", "data/NEWdata2.rds")
+rds_path <- rds_paths[file.exists(rds_paths)][1]
+
+if (file.exists(csv_path)) {
+  raw <- read_csv(csv_path, show_col_types = FALSE)
+} else if (!is.na(rds_path)) {
+  raw <- as.data.frame(readRDS(rds_path))
+} else {
+  stop(" ")
+}
+
+required <- c("RIDAGEYR", "BPXOSY1", "BPXODI1", "RIAGENDR", "RIDRETH1")
+missing_columns <- setdiff(required, names(raw))
+if (length(missing_columns)) {
+  stop("Missing columns: ", paste(missing_columns, collapse = ", "))
+}
+# Data preparation 
+
+sex_label <- function(x) {
+  z <- trimws(as.character(x))
+  dplyr::case_when(
+    z %in% c("1", "Male", "male") ~ "Male",
+    z %in% c("2", "Female", "female") ~ "Female",
+    TRUE ~ NA_character_
+  )
+}
+race_label <- function(x) {
+  z <- trimws(as.character(x))
+  dplyr::case_when(
+    z == "1" ~ "Mexican American",
+    z == "2" ~ "Other Hispanic",
+    z == "3" ~ "Non-Hispanic White",
+    z == "4" ~ "Non-Hispanic Black",
+    z == "6" ~ "Non-Hispanic Asian",
+    z == "7" ~ "Other Race - Including Multi-Racial",
+    TRUE ~ z
+  )
+}
+
+race_reference_order <- c(
+  "Other Race - Including Multi-Racial", "Other Hispanic",
+  "Non-Hispanic White", "Mexican American", "Non-Hispanic Black",
+  "Non-Hispanic Asian"
+)
+race_values <- race_label(raw$RIDRETH1)
+race_levels <- c(race_reference_order,
+                 setdiff(unique(stats::na.omit(race_values)), race_reference_order))
+
+adult_data <- raw |>
+  mutate(
+    RIDAGEYR = as.numeric(RIDAGEYR),
+    BPXOSY1 = as.numeric(BPXOSY1),
+    BPXODI1 = as.numeric(BPXODI1),
+    sex = factor(sex_label(RIAGENDR), levels = c("Female", "Male")),
+    race = factor(race_label(RIDRETH1), levels = race_levels)
+  ) |>
+  filter(!is.na(RIDAGEYR), RIDAGEYR >= 20, RIDAGEYR < 80)
+
+analysis_a <- adult_data |> filter(complete.cases(BPXOSY1, BPXODI1))
+analysis_b <- adult_data |> filter(complete.cases(BPXOSY1, sex))
+analysis_c <- adult_data |> filter(complete.cases(BPXOSY1, race))
+
+if (nrow(analysis_a) < 3 || nrow(analysis_b) < 3 || nrow(analysis_c) < 3 ||
+    n_distinct(analysis_b$sex) != 2 || n_distinct(analysis_c$race) < 2) {
+  stop("Too few complete observations or groups for the requested analyses.")
+}
+
+```
+
+# Analysis A: Systolic and diastolic
+
+## Row
+
+```{r}
+#| title: Association between diastolic and systolic pressure
+ggplot(analysis_a, aes(x = BPXODI1, y = BPXOSY1)) +
+  geom_point(alpha = 0.17, size = 0.7, color = "#355070") +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE,
+              color = "#c44944") +
+  labs(x = "Diastolic blood pressure (mmHg)",
+       y = "Systolic blood pressure (mmHg)") +
+  theme_minimal(base_size = 12)
+```
+
+```{r}
+#| title: Association by sex
+analysis_a |> filter(!is.na(sex)) |>
+  ggplot(aes(x = BPXODI1, y = BPXOSY1)) +
+  geom_point(alpha = 0.2, size = 0.6, color = "#397c91") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE,
+              color = "#bd503d") +
+  facet_wrap(~ sex) +
+  labs(x = "Diastolic blood pressure (mmHg)",
+       y = "Systolic blood pressure (mmHg)") +
+  theme_minimal(base_size = 12)
+```
+
+# Analysis B: Systolic pressure by sex
+
+## Row
+
+```{r}
+#| title: Distribution of systolic pressure by sex
+ggplot(analysis_b, aes(x = BPXOSY1)) +
+  geom_histogram(bins = 25, fill = "#eb805e", color = "white") +
+  facet_wrap(~ sex) +
+  labs(x = "Systolic blood pressure (mmHg)", y = "Count") +
+  theme_minimal(base_size = 12)
+```
+
+```{r}
+#| title: Density and boxplot by sex
+ggplot(analysis_b, aes(x = sex, y = BPXOSY1, fill = sex)) +
+  geom_violin(alpha = 0.65, trim = FALSE, show.legend = FALSE) +
+  geom_boxplot(width = 0.13, alpha = 0.8, show.legend = FALSE,
+               outlier.alpha = 0.25) +
+  coord_flip() +
+  scale_fill_manual(values = c("Female" = "#e88a81", "Male" = "#64b6c7")) +
+  labs(x = NULL, y = "Systolic blood pressure (mmHg)") +
+  theme_minimal(base_size = 12)
+```
+
+# Analysis C: Systolic pressure by race/ethnicity
+
+## Row
+
+```{r}
+#| title: Systolic pressure by race/ethnicity
+ggplot(analysis_c, aes(x = race, y = BPXOSY1)) +
+  geom_boxplot(fill = "#7a74c1", outlier.alpha = 0.25) +
+  coord_flip() +
+  labs(x = NULL, y = "Systolic blood pressure (mmHg)") +
+  theme_minimal(base_size = 11)
+```
+
+```{r}
+#| title: Distribution within groups
+ggplot(analysis_c, aes(x = BPXOSY1)) +
+  geom_histogram(bins = 25, fill = "#e98b69", color = "white") +
+  facet_wrap(~ race, scales = "free_y") +
+  labs(x = "Systolic blood pressure (mmHg)", y = "Count") +
+  theme_minimal(base_size = 10)
+```
+
+## Row
+
+```{r}
+#| title: Density curves
+ggplot(analysis_c, aes(x = BPXOSY1, fill = race, color = race)) +
+  geom_density(alpha = 0.16) +
+  labs(x = "Systolic blood pressure (mmHg)",
+       y = "Density", color = "Race/ethnicity", fill = "Race/ethnicity") +
+  theme_minimal(base_size = 11)
+```

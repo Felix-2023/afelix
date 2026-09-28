@@ -2,22 +2,28 @@
 title: "Blog"
 ---
 
-## Matooke: The Taste of Uganda
+## **From NHANES Data to a Blood Pressure Dashboard**
 
-When people talk about Ugandan food, one dish is almost impossible to overlook: matooke. More than an everyday meal, matooke represents Uganda’s culture, hospitality, and agricultural heritage.
+*By Felix Atuhaire*
 
-Matooke refers to green cooking bananas that are peeled, wrapped in banana leaves, and steamed until soft. The cooked bananas are then mashed while still inside the leaves, producing a smooth, warm, golden meal. Matooke has a mild taste, making it an excellent accompaniment to flavorful sauces.
+I built a Quarto dashboard to explore how systolic and diastolic blood pressure relate to each other, and how systolic pressure varies across groups of adults using the 2017-March 2020 NHANES dataset.
 
-![](images/clipboard-1839601345.jpeg)
+**Preparing the data**
 
-It is commonly served with beef, chicken, beans, groundnut sauce, fish, or vegetables. In many Ugandan homes, especially in the central and western regions, a meal may feel incomplete without matooke. It is prepared for ordinary family meals as well as weddings, celebrations, and visits from important guests.
+The dashboard uses a previously collected NHANES file. Its setup code looks for data1000.csv and reads it with read_csv(). If that file is unavailable, it can read a saved RDS file. Before plotting, the code checks for the age, blood pressure, recorded sex, and race/ethnicity columns.
 
-Preparing matooke traditionally requires patience and skill. The cook carefully peels the bananas, wraps them in clean banana leaves, and places them in a saucepan lined with banana stalks or leaves. Water is added beneath the wrapped bundle, allowing the matooke to cook slowly through steam. This method gives the food its distinctive aroma and texture.
+I restricted the data to adults aged 20 through 79, leaving 8,550 adults. I then used complete.cases() separately for each analysis. I needed both systolic and diastolic readings to appear in the first set of plots, but only a systolic reading and a recorded-sex value to appear in the sex comparison. This keeps the observations available for each question without treating missing readings as measurements.
 
-![](images/clipboard-2954288941.jpeg)
+The .qmd file uses Quarto’s dashboard format to organize the plots into pages and ggplot2 to draw them. Its settings hide the R code, warnings, and routine messages in the rendered dashboard, so readers can focus on the figures.
 
-Matooke also supports the livelihoods of many Ugandan farmers, traders, transporters, and food vendors. Large bunches of green bananas can be seen in gardens, roadside markets, and on trucks travelling from farming areas to towns and cities.
+**Comparing two blood pressure measurements together**
 
-For Ugandans living abroad, matooke can bring back memories of home, family gatherings, and shared meals. It is not simply food placed on a plate; it is a connection to identity and tradition.
+The first page places diastolic pressure on the horizontal axis and systolic pressure on the vertical axis. Each point represents an adult with both readings; a fitted line shows the overall direction of the relationship. A second plot separates the points into female and male panels.
 
-Anyone visiting Uganda should try matooke served with a rich local sauce. Its preparation, flavor, and cultural importance offer a memorable introduction to the Pearl of Africa. Matooke tells a simple but powerful story: Uganda’s history and hospitality can be experienced through its food.
+Among 7,187 adults with both readings, the Pearson correlation was approximately 0.66. Higher diastolic readings generally accompanied higher systolic readings in this sample, although individual points varied around the fitted line. The line describes a trend; it does not show that one measurement causes the other.
+
+**Comparing systolic pressure across groups**
+
+The next page focuses on the first systolic reading. Side-by-side histograms show how often different values occurred among female and male respondents. A violin plot with a boxplot makes the center, spread, and unusual high readings easier to compare. Mean first systolic pressure was about 121.3 mmHg for female respondents and 127.0 mmHg for male respondents.
+
+The final page uses boxplots, separate histograms, and overlapping density curves to examine race/Hispanic-origin categories. Boxplots emphasize medians and spread; histograms show counts within each group; density curves compare distribution shapes when group sizes differ. The highest sample mean was approximately 128.5 mmHg in the Non-Hispanic Black category. The other category means ranged from about 121.9 to 124.0 mmHg. These are descriptive differences between observed groups, not explanations for why the differences occur.
