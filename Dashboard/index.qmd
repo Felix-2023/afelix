@@ -174,3 +174,29 @@ ggplot(analysis_c, aes(x = BPXOSY1, fill = race, color = race)) +
        y = "Density", color = "Race/ethnicity", fill = "Race/ethnicity") +
   theme_minimal(base_size = 11)
 ```
+
+# Analysis D: Anayze 2x2 table
+
+## Row
+
+```{r}
+#| title: With-in group percentage
+  
+analysis_b |>
+  filter(!is.na(sex), !is.na(BPXOSY1)) |>
+  mutate(bp_group = if_else(BPXOSY1 < 130, "Below 130", "At least 130")
+  ) |>
+  count(sex, bp_group) |>
+  group_by(sex) |>
+  mutate(percentage = 100 * n / sum(n)) |>
+  ungroup() |>
+ggplot(aes(x = sex, y = percentage, fill = bp_group)) +
+  geom_col(width = 0.64) +
+  scale_fill_manual(values = c("Below 130" = "#68b2a7","At least 130" = "#e49469")
+  ) +
+  labs(
+    x = NULL, y = "Within-group percentage",
+    fill = "First reading"
+  ) +
+  theme_minimal(base_size = 12)
+```
